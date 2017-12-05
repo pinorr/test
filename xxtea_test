@@ -1,0 +1,108 @@
+#include <iostream>
+#include <windows.h>
+#include <WinBase.h>
+
+#include <fstream>  
+#include <stdlib.h>  
+
+#include "xxtea.h"
+
+using namespace std;
+
+#define BUFFER_LEN	1024
+
+void main()
+{
+	int iMax = 0;
+	char buffer[BUFFER_LEN];
+	
+	ifstream in1("test_6.luac");
+	if (!in1.is_open())
+	{
+		cout << "Error opening file" << endl;
+	}
+	while (!in1.eof())
+	{
+		memset(buffer, 0, BUFFER_LEN);
+		in1.read(buffer, BUFFER_LEN);
+		iMax = 0;
+		for (int i = 0; i < BUFFER_LEN; ++i)
+		{
+			if (buffer[i] != 0)
+				iMax = i;
+		}
+    for (int i = 0; i <= iMax - 10; ++i)
+		{
+			if (i % 16 == 0) cout << endl;
+			cout << hex << (unsigned int)(unsigned char)(buffer[i + 10]) << " ";
+		}
+	}
+	cout << dec << endl;
+
+	ifstream in("test_11.luac");
+	if (!in.is_open())
+	{
+		cout << "Error opening file" << endl;
+	}
+  while (!in.eof())
+	{
+		memset(buffer, 0, BUFFER_LEN);
+		in.read(buffer, BUFFER_LEN);
+		iMax = 0;
+		for (int i = 0; i<BUFFER_LEN; ++i)
+		{
+			if (buffer[i] != 0)
+				iMax = i;
+		}
+		for (int i = 0; i<=iMax-10; ++i)
+		{
+			if (i % 16 == 0) cout << endl;
+			cout << hex << (unsigned int)(unsigned char)(buffer[i+10])<<" ";
+		}		
+	}
+	cout << dec << endl;
+  char chunk[] = "1234567890abcdefg1234567890abcdefg\r";
+	int chunkSize = strlen(chunk);
+	char _xxteaKey[] = "RY_QP_MBCLIENT_!2016";
+	int xxteaKeyLen = strlen(_xxteaKey);
+
+	//_xxteaKey[2] = 85;
+	xxtea_long len = 0;
+	unsigned char* result = xxtea_encrypt((unsigned char*)chunk,
+		(xxtea_long)chunkSize,
+		(unsigned char*)_xxteaKey,
+		(xxtea_long)xxteaKeyLen,
+		&len);
+cout << "len=" << len << endl;
+	for (int i = 0; i < len; ++i)
+	{
+		if (i % 16 == 0) cout << endl;
+		cout << hex << (unsigned int)(unsigned char)(result[i]) << " ";
+	}
+	cout << dec  << endl;
+	cout << "iMax=" << iMax << endl;
+  //_xxteaKey[2] = 85;
+	xxtea_long lenOut = 0;
+	unsigned char* resultOut = xxtea_decrypt((unsigned char*)(buffer+10),
+	//unsigned char* resultOut = xxtea_decrypt((unsigned char*)(result),
+		(xxtea_long)40,
+		(unsigned char*)_xxteaKey,
+		(xxtea_long)xxteaKeyLen,
+		&lenOut);
+	cout << "lenOut=" << lenOut << endl;
+
+//	string strOut = (char *)resultOut;
+//	cout << strlen(chunk) << endl;
+//	cout << strlen(strOut.c_str()) << '\t' << strOut.c_str() << endl;
+for (int i = 0; i < lenOut; ++i)
+	{
+		if (i % 16 == 0) cout << endl;
+		cout << hex << (unsigned int)(unsigned char)(resultOut[i]) << " ";
+	}
+
+	unsigned int n1 = 123123123 | 2323123678;
+	unsigned int n2 = 123123123 & 2323123678;
+//	cout << n1 << endl;
+//	cout << n2 << endl;
+	Sleep(100000);
+}
