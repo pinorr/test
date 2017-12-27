@@ -53,10 +53,10 @@ struct stData
 class CGameLogicPino
 {
 	//变量定义
-protected:	
-	std::unordered_map<BYTE, BYTE>				m_mapIndexByVal;
+protected:		
 	std::unordered_map<DWORD, DWORD>			m_mapKeyData;
 	stData										m_KeyData[16384];
+	BYTE										m_IndexByVal[256];
 
 	//函数定义
 public:
