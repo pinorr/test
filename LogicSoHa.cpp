@@ -32,8 +32,9 @@ CGameLogicPino::~CGameLogicPino()
 
 void CGameLogicPino::initData()
 {	
+	memset(m_IndexByVal, 0xFF, sizeof(m_IndexByVal));
 	for (int i=0; i<MAX_CARD_NUM; ++i)
-		m_mapIndexByVal[g_cbCardVal[i]] = i+1;
+		m_IndexByVal[g_cbCardVal[i]] = i+1;
 
 #ifndef USE_MAP
 	return;
@@ -69,15 +70,12 @@ void CGameLogicPino::initData()
 DWORD CGameLogicPino::getKeyByCards(const BYTE cbData[], BYTE num)
 {
 	DWORD dwKey = 0;
-	if (m_mapIndexByVal.empty())
-		initData();
-
 	if (num == 0 || num > 5)
 		return 0;
 
 	BYTE cbIndex[5] = {};
 	for (int i = 0; i < num; ++i)
-		cbIndex[i] = m_mapIndexByVal[cbData[i]];
+		cbIndex[i] = m_IndexByVal[cbData[i]];
 
 	sort(cbIndex, cbIndex + 5, cmp);
 
@@ -125,7 +123,7 @@ DWORD CGameLogicPino::getLogicVal(const BYTE cbData[], BYTE num)
 	BYTE byCountMaxCor[7] = {};
 	for (int i = 0; i < num; ++i)
 	{
-		BYTE index = m_mapIndexByVal[cbData[i]] - 1;
+		BYTE index = m_IndexByVal[cbData[i]] - 1;
 		if (index >= MAX_CARD_NUM)
 			return 0;
 
@@ -181,7 +179,7 @@ DWORD CGameLogicPino::getLogicVal2(const BYTE cbData[], BYTE num)
 	BYTE byMaxVal = 0;
 	for (int i=0; i<num; ++i)
 	{
-		BYTE index = m_mapIndexByVal[cbData[i]] - 1;
+		BYTE index = m_IndexByVal[cbData[i]] - 1;
 		if (index >= MAX_CARD_NUM)
 			return 0;
 			
@@ -426,13 +424,13 @@ float CGameLogicPino::get1WinPer(const BYTE cbData1[], const BYTE cbData2[], BYT
 	memset(bFlag, true, MAX_CARD_NUM);
 	for (int i = 0; i < num1; ++i)
 	{
-		BYTE index = m_mapIndexByVal[cbData1[i]] - 1;
+		BYTE index = m_IndexByVal[cbData1[i]] - 1;
 		if (index < MAX_CARD_NUM)
 			bFlag[index] = false;
 	}
 	for (int i = 0; i < num2; ++i)
 	{
-		BYTE index = m_mapIndexByVal[cbData2[i]] - 1;
+		BYTE index = m_IndexByVal[cbData2[i]] - 1;
 		if (index < MAX_CARD_NUM)
 			bFlag[index] = false;
 	}
