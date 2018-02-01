@@ -37,7 +37,6 @@ enum enPlayType
 };
 
 #define TY_MY	(1+(1<<enPlayType_WANG)+(1<<enPlayType_123)+(1<<enPlayType_27A)+(1<<enPlayType_XDD))
-//#define TY_MY	(1+(1<<enPlayType_WANG)+(1<<enPlayType_123)+(1<<enPlayType_XDD))
 
 static BYTE s_byIndex[MAX_TYPE] =
 {
