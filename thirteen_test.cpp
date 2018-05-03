@@ -11,10 +11,10 @@
 
 using namespace std;
 
-//°ïÖúº¯Êı
+//å¸®åŠ©å‡½æ•°
 void printCards(BYTE *byTemp)
 {
-	//´òÓ¡ËùÓĞÅÆÖµ
+	//æ‰“å°æ‰€æœ‰ç‰Œå€¼
 	BYTE byData[13][5] = {};
 	for (int i = 0; i < 13; ++i) {
 		BYTE val = byTemp[i] % 0x10;
@@ -34,7 +34,7 @@ void printCards(BYTE *byTemp)
 	}
 	cout << endl;
 }
-//°ïÖúº¯Êı
+//å¸®åŠ©å‡½æ•°
 bool isSameCards(BYTE byCards[13], stAnswer answer)
 {
 	BYTE bySrc[13] = {};
@@ -53,7 +53,7 @@ bool isSameCards(BYTE byCards[13], stAnswer answer)
 	}
 	return true;
 }
-//°ïÖúº¯Êı
+//å¸®åŠ©å‡½æ•°
 bool cmp(const stAnswer &temp1, const stAnswer &temp2)
 {
 	//static float fVal[3][CT_FIVE_MAX * 16] = {
@@ -117,7 +117,7 @@ void main()
 	//*/
 	sort(vctOut2.begin(), vctOut2.end(), cmp);
 
-	//´òÓ¡ÅÆ×é
+	//æ‰“å°ç‰Œç»„
 	for (size_t i = 0; i < vctOut2.size(); ++i) {
 		cout << endl;
 		stAnswer &answer = vctOut2[i];
