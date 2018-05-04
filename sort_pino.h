@@ -1,5 +1,4 @@
 
-
 #pragma once
 
 template <typename T>
@@ -33,6 +32,52 @@ void sort_fast(T *arr, int iBegin, int iEnd)
 	sort_fast(arr, mid+1, iEnd);
 }
 
+//得到中位数的中位数
+template <typename T>
+int pivot_mid(T *arr, int n, int left, int right)
+{
+	if (right - left < 20) {
+		sort_fast(arr, left, right);
+		return n;
+	}
+	int k = 0;
+	for (int i = left; i <= right - 4; i += 5)
+	{
+		sort_fast(arr, i, i+4);
+		swap_pino(arr[k + left], arr[i + 2]);
+		++k;
+	}
+	int mid = left + (n - left + 1) * k / (right - left + 1);
+	if (mid > left + k - 1)
+		mid = left + k - 1;
+	return BFPRT_find_n(arr, mid, left, left + k - 1);
+}
+
+template <typename T>
+T BFPRT_find_n(T *arr, int n, int iBegin, int iEnd)
+{
+	int index = pivot_mid(arr, n, iBegin, iEnd);
+	swap_pino(arr[index], arr[iBegin]);
+
+	int i = iBegin + 1;
+	int j = iEnd;
+	while (i < j)
+	{
+		while (i < j && arr[i] <= arr[iBegin])	++i;
+		while (i < j && arr[j] >= arr[iBegin])	--j;
+		if (i < j)	swap_pino(arr[i], arr[j]);
+	}
+	int mid = arr[iBegin] < arr[j] ? j - 1 : j;
+	swap_pino(arr[iBegin], arr[mid]);
+
+	if (mid == n)
+		return mid;
+	else if (mid > n)
+		return BFPRT_find_n(arr, n, iBegin, mid - 1);
+	else
+		return BFPRT_find_n(arr, n, mid + 1, iEnd);
+}
+
 template <typename T>
 T sort_fast_find_n(T *arr, int n, int iBegin, int iEnd)
 {
@@ -59,7 +104,7 @@ T sort_fast_find_n(T *arr, int n, int iBegin, int iEnd)
 	}
 	else
 	{
-		swap_pino(arr[iBegin], arr[mid]);
+		//swap_pino(arr[iBegin], arr[mid]);
 		return sort_fast_find_n(arr, n, mid+1, iEnd);
 	}
 
